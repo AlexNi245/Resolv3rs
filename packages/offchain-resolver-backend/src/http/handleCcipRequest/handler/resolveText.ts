@@ -1,24 +1,15 @@
-import { IDatabase } from '../../../persistance/IDatabase';
 import { PROFILE_RECORD_NAME } from 'dm3-lib-profile/dist.backend';
 import { stringify } from 'dm3-lib-shared/dist.backend';
-import { interceptTextRecord } from './intercept';
-import { logDebug } from 'dm3-lib-shared';
 
-export async function handleText(db: IDatabase, request: any) {
+export async function handleText(chain: IChain, request: any) {
     const { record, name } = request;
 
     if (record !== PROFILE_RECORD_NAME) {
         throw Error(`${record} Record is not supported by this resolver`);
     }
 
-    const interceptResult = interceptTextRecord(name, record);
-    logDebug({ text: '[Interceptor handleText] result ', interceptResult });
-
-    if (interceptResult) {
-        return interceptResult;
-    }
-
-    const userProfile = await db.getUserProfile(name);
+    //Todo fetch Profile from Gnosis
+    const userProfile = await chain.getText(name);
 
     return userProfile
         ? 'data:application/json,' + stringify(userProfile)

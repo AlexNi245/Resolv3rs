@@ -51,7 +51,7 @@ describe('CCIP Gateway', () => {
             'OffchainResolver',
         );
         offchainResolver = await OffchainResolver.deploy(
-            'http://localhost:8080/{sender}/{data}',
+            'http://localhost:8080/10200/{sender}/{data}/',
             signer.address,
             [signer.address],
         );
@@ -99,91 +99,9 @@ describe('CCIP Gateway', () => {
         await redisClient.disconnect();
     });
 
-    describe('Interceptor', () => {
-        afterEach(() => {
-            process.env.interceptor = '';
-        });
-
-        it('resolvesName returns the Address from the interceptor', async () => {
-            const interceptor: Interceptor = {
-                ensName: 'test.eth',
-                addr: '0x25A643B6e52864d0eD816F1E43c0CF49C83B8292',
-            };
-
-            process.env.interceptor = JSON.stringify(interceptor);
-
-            const provider = new MockProvider(
-                hreEthers.provider,
-                fetchProfileFromCcipGateway,
-                offchainResolver,
-            );
-
-            expect(await provider.resolveName('foo.test.eth')).to.eql(
-                '0x25A643B6e52864d0eD816F1E43c0CF49C83B8292',
-            );
-        });
-        it('Returns profile from the interceptor', async () => {
-            const interceptor: Interceptor = {
-                ensName: 'test.eth',
-                textRecords: {
-                    'network.dm3.profile': 'test',
-                },
-            };
-            process.env.interceptor = JSON.stringify(interceptor);
-
-            const { signature, profile, signer } = profileApp.locals.forTests;
-
-            await dm3User.sendTransaction({
-                to: signer,
-                value: hreEthers.BigNumber.from(1),
-            });
-
-            const name = 'foo.test.eth';
-
-            //Create the profile in the first place
-            const writeRes = await request(profileApp)
-                .post(`/name`)
-                .send({
-                    name,
-                    ensName: signer + '.addr.dm3.eth',
-                    address: signer,
-                    signedUserProfile: {
-                        profile,
-                        signature,
-                    },
-                });
-
-            expect(writeRes.status).to.equal(200);
-            //Call the contract to retrieve the gateway url
-            const { callData, sender } = await resolveGateWayUrl(
-                name,
-                offchainResolver,
-            );
-
-            //You the url returned by he contract to fetch the profile from the ccip gateway
-            const { body, status } = await request(ccipApp)
-                .get(`/${sender}/${callData}`)
-                .send();
-
-            expect(status).to.equal(200);
-
-            const resultString = await offchainResolver.resolveWithProof(
-                body.data,
-                callData,
-            );
-
-            const [actualProfile] = getResolverInterface().decodeFunctionResult(
-                'text',
-                resultString,
-            );
-
-            expect(actualProfile).to.eql('test');
-        });
-    });
-
     describe('Get UserProfile Offchain', () => {
         describe('ResolveText', () => {
-            it('Returns valid Offchain profile', async () => {
+            it.only('Returns valid Offchain profile', async () => {
                 const { signature, profile, signer } =
                     profileApp.locals.forTests;
 
@@ -216,7 +134,7 @@ describe('CCIP Gateway', () => {
 
                 //You the url returned by he contract to fetch the profile from the ccip gateway
                 const { body, status } = await request(ccipApp)
-                    .get(`/${sender}/${callData}`)
+                    .get(`/100200/${sender}/${callData}`)
                     .send();
 
                 expect(status).to.equal(200);

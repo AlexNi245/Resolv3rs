@@ -11,26 +11,21 @@ interface ISupportsInterface {
 }
 
 abstract contract SupportsInterface is ISupportsInterface {
-    function supportsInterface(bytes4 interfaceID)
-        public
-        pure
-        virtual
-        override
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceID
+    ) public pure virtual override returns (bool) {
         return interfaceID == type(ISupportsInterface).interfaceId;
     }
 }
 
 interface IResolverService {
-    function resolve(bytes calldata name, bytes calldata data)
+    function resolve(
+        bytes calldata name,
+        bytes calldata data
+    )
         external
         view
-        returns (
-            bytes memory result,
-            uint64 expires,
-            bytes memory sig
-        );
+        returns (bytes memory result, uint64 expires, bytes memory sig);
 }
 
 /**
@@ -54,11 +49,7 @@ contract OffchainResolver is IExtendedResolver, SupportsInterface {
         bytes extraData
     );
 
-    constructor(
-        string memory _url,
-        address _owner,
-        address[] memory _signers
-    ) {
+    constructor(string memory _url, address _owner, address[] memory _signers) {
         url = _url;
         owner = _owner;
         for (uint256 i = 0; i < _signers.length; i++) {
@@ -120,12 +111,10 @@ contract OffchainResolver is IExtendedResolver, SupportsInterface {
      * @param data The ABI encoded data for the underlying resolution function (Eg, addr(bytes32), text(bytes32,string), etc).
      * @return The return data, ABI encoded identically to the underlying function.
      */
-    function resolve(bytes calldata name, bytes calldata data)
-        external
-        view
-        override
-        returns (bytes memory)
-    {
+    function resolve(
+        bytes calldata name,
+        bytes calldata data
+    ) external view override returns (bytes memory) {
         bytes memory callData = abi.encodeWithSelector(
             IResolverService.resolve.selector,
             name,
@@ -146,11 +135,10 @@ contract OffchainResolver is IExtendedResolver, SupportsInterface {
      * Callback used by CCIP read compatible clients to verify and parse the response.
      * extraData -> the original call data
      */
-    function resolveWithProof(bytes calldata response, bytes calldata extraData)
-        external
-        view
-        returns (bytes memory)
-    {
+    function resolveWithProof(
+        bytes calldata response,
+        bytes calldata extraData
+    ) external view returns (bytes memory) {
         (address signer, bytes memory result) = SignatureVerifier.verify(
             extraData,
             response
@@ -159,12 +147,9 @@ contract OffchainResolver is IExtendedResolver, SupportsInterface {
         return result;
     }
 
-    function supportsInterface(bytes4 interfaceID)
-        public
-        pure
-        override
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceID
+    ) public pure override returns (bool) {
         return
             interfaceID == type(IExtendedResolver).interfaceId ||
             super.supportsInterface(interfaceID);

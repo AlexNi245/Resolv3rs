@@ -12,7 +12,7 @@ export function ccipGateway(signer: Signer, resolverAddr: string) {
     const router = express.Router();
 
     router.get(
-        '/:resolverAddr/:calldata',
+        '/:chainId/:resolverAddr/:calldata',
         //@ts-ignore
         async (
             req: express.Request & { app: WithLocals },
@@ -26,6 +26,7 @@ export function ccipGateway(signer: Signer, resolverAddr: string) {
             try {
                 const { request, signature } = decodeRequest(calldata);
 
+                //Adjust
                 const response = await handleCcipRequest(
                     req,
                     signature,

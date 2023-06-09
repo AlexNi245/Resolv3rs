@@ -21,6 +21,9 @@ const GOERLI_PK = process.env.GOERLI_PK;
 
 const GOERLI_RPC = process.env.GOERLI_RPC ?? '';
 
+const GNOSIS_PK = process.env.GNOSIS_PK ?? '';
+const GNOSIS_RPC = process.env.GNOSIS_RPC ?? '';
+
 const networks = {
     localhost: {
         url: 'http://localhost:8545',
@@ -40,6 +43,12 @@ const getNetworks = () => {
             accounts: [GOERLI_PK],
         };
     }
+    if (GNOSIS_PK) {
+        networks.gnosis = {
+            url: GNOSIS_RPC,
+            accounts: [GNOSIS_PK],
+        };
+    }
 
     if (MAINNET_PK) {
         networks.mainnet = {
@@ -53,7 +62,7 @@ const getNetworks = () => {
 
 const config: HardhatUserConfig = {
     solidity: {
-        version: '0.8.4',
+        version: '0.8.9',
         settings: {
             optimizer: {
                 enabled: true,

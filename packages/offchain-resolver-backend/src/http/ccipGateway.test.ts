@@ -101,7 +101,7 @@ describe('CCIP Gateway', () => {
 
     describe('Get UserProfile Offchain', () => {
         describe('ResolveText', () => {
-            it.only('Returns valid Offchain profile', async () => {
+            it('Returns valid Offchain profile', async () => {
                 const { signature, profile, signer } =
                     profileApp.locals.forTests;
 

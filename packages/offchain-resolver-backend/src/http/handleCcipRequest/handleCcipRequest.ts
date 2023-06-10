@@ -1,21 +1,21 @@
-import express from 'express';
+import { logInfo } from 'dm3-lib-shared';
 import { handleAddr } from './handler/handleAddr';
 import { handleText } from './handler/resolveText';
 export async function handleCcipRequest(
-    req: express.Request,
+    chain: IChain,
     signature: string,
     request: any,
 ) {
     switch (signature) {
         case 'text(bytes32,string)':
-            req.app.locals.logger.info('Reading text(bytes32,string)');
-            return await handleText(req.app.locals.db, request);
+            logInfo('Reading text(bytes32,string)');
+            return await handleText(chain, request);
         case 'addr(bytes32)':
-            req.app.locals.logger.info('Reading addr(bytes32))');
-            return await handleAddr(req.app.locals.db, request);
+            logInfo('Reading addr(bytes32))');
+            return await handleAddr(chain, request);
         case 'addr(bytes32,uint256)':
-            req.app.locals.logger.info('Reading addr(bytes32,uint256))');
-            return await handleAddr(req.app.locals.db, request);
+            logInfo('Reading addr(bytes32,uint256))');
+            return await handleAddr(chain, request);
 
         default:
             return null;

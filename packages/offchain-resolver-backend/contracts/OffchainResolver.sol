@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.9;
 
 import './IExtendedResolver.sol';
 import './SignatureVerifier.sol';
 
 import 'hardhat/console.sol';
+
+import './OwnedNode.sol';
 
 interface ISupportsInterface {
     function supportsInterface(bytes4 interfaceID) external pure returns (bool);
@@ -32,7 +34,12 @@ interface IResolverService {
  * Implements an ENS resolver that directs all queries to a CCIP read gateway.
  * Callers must implement EIP 3668 and ENSIP 10.
  */
-contract OffchainResolver is IExtendedResolver, SupportsInterface {
+//TODO RENAME!!!
+contract OffchainResolver is
+    IExtendedResolver,
+    SupportsInterface,
+    OwnedENSNode
+{
     address public owner;
     string public url;
     mapping(address => bool) public signers;
@@ -49,7 +56,12 @@ contract OffchainResolver is IExtendedResolver, SupportsInterface {
         bytes extraData
     );
 
-    constructor(string memory _url, address _owner, address[] memory _signers) {
+    constructor(
+        address ens,
+        string memory _url,
+        address _owner,
+        address[] memory _signers
+    ) OwnedENSNode(ENS(ens)) {
         url = _url;
         owner = _owner;
         for (uint256 i = 0; i < _signers.length; i++) {
@@ -115,13 +127,16 @@ contract OffchainResolver is IExtendedResolver, SupportsInterface {
         bytes calldata name,
         bytes calldata data
     ) external view override returns (bytes memory) {
+        console.logBytes(name);
         bytes memory callData = abi.encodeWithSelector(
             IResolverService.resolve.selector,
             name,
-            data
+            replaceNodeWithOwnedNode(data)
         );
+
         string[] memory urls = new string[](1);
         urls[0] = url;
+        console.log(url);
         revert OffchainLookup(
             address(this),
             urls,

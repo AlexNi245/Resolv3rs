@@ -33,10 +33,8 @@ app.use(bodyParser.json());
     };
 
     const signer = getSigner();
-    const resolverAddress = readKeyFromEnv('RESOLVER_ADDR');
 
-    app.use('/', ccipGateway(signer, resolverAddress));
-    app.use('/profile', profile(getWeb3Provider()));
+    app.use('/', ccipGateway(signer));
 })();
 const port = process.env.PORT || '8081';
 server.listen(port, () => {

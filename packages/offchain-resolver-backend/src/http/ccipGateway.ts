@@ -1,14 +1,22 @@
-import {
-    decodeRequest,
-    encodeResponse,
-} from 'dm3-lib-offchain-resolver/dist.backend';
+import { encodeResponse } from 'dm3-lib-offchain-resolver/dist.backend';
 import { logError } from 'dm3-lib-shared/dist.backend';
-import { Signer } from 'ethers';
+import { Signer, ethers } from 'ethers';
 import express from 'express';
 import { handleCcipRequest } from './handleCcipRequest/handleCcipRequest';
 import { WithLocals } from './types';
+import { getChain } from './handleCcipRequest/handler/chain/getChain';
+import { decodeCcipRequest } from './encoding/decodeCcipRequest';
 
-export function ccipGateway(signer: Signer, resolverAddr: string) {
+export function getResolverInterface() {
+    return new ethers.utils.Interface([
+        'function resolve(bytes calldata name, bytes calldata data) external view returns(bytes)',
+        'function text(bytes32 node, string calldata key) external view returns (string memory)',
+        // eslint-disable-next-line max-len
+        'function resolveWithProof(bytes calldata response, bytes calldata extraData) external view returns (bytes memory)',
+        'function addr(bytes32 node) external view returns (address)',
+    ]);
+}
+export function ccipGateway(signer: Signer) {
     const router = express.Router();
 
     router.get(
@@ -18,17 +26,18 @@ export function ccipGateway(signer: Signer, resolverAddr: string) {
             req: express.Request & { app: WithLocals },
             res: express.Response,
         ) => {
-            const { resolverAddr } = req.params;
-            const calldata = req.params.calldata.replace('.json', '');
+            const { resolverAddr, chainId, calldata } = req.params;
 
             req.app.locals.logger.info(`GET ${resolverAddr}`);
 
             try {
-                const { request, signature } = decodeRequest(calldata);
+                const { request, signature } = decodeCcipRequest(calldata);
+
+                const chain: IChain = await getChain(Number.parseInt(chainId));
 
                 //Adjust
                 const response = await handleCcipRequest(
-                    req,
+                    chain,
                     signature,
                     request,
                 );

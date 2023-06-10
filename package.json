@@ -19,7 +19,8 @@
             "packages/web",
             "packages/offchain-resolver",
             "packages/billboard-widget",
-            "packages/integration-tests"
+            "packages/integration-tests",
+            "packages/ens-app-v3"
         ],
         "nohoist": [
             "**/react",

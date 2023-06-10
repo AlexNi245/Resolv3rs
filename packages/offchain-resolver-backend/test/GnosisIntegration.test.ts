@@ -45,6 +45,7 @@ describe.only('GnosisIntegration', () => {
 
         console.log('HASH ALICE', ethers.utils.namehash('alice123.eth'));
 
+
         expect(text).to.equal('BAR');
     });
     it('should resolve addr', async () => {

@@ -1,15 +1,11 @@
-import * as dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import * as dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
-import cors from 'cors';
 import winston from 'winston';
-import { getDatabase } from './persistance/getDatabase';
 import { ccipGateway } from './http/ccipGateway';
-import { getWeb3Provider } from './utils/getWeb3Provider';
 import { getSigner } from './utils/getSigner';
-import { readKeyFromEnv } from './utils/readKeyEnv';
-import { profile } from './http/profile';
 
 dotenv.config();
 
@@ -27,7 +23,6 @@ app.use(bodyParser.json());
         transports: [new winston.transports.Console()],
     });
 
-    app.locals.db = await getDatabase(app.locals.logger);
     app.locals.config = {
         spamProtection: process.env.SPAM_PROTECTION === 'true',
     };

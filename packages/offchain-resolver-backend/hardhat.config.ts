@@ -40,7 +40,7 @@ const getNetworks = () => {
     if (GOERLI_PK) {
         networks.goerli = {
             url: GOERLI_RPC,
-            accounts: [GOERLI_PK],
+            accounts: [GNOSIS_PK],
         };
     }
     if (GNOSIS_PK) {
@@ -74,7 +74,7 @@ const config: HardhatUserConfig = {
     },
 
     etherscan: {
-        apiKey: '',
+        apiKey: process.env.ETHERSCAN_API,
     },
     networks: getNetworks(),
     typechain: {

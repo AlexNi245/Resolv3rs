@@ -1,7 +1,8 @@
 /* eslint no-console: 0 */
 
 import { ethers } from 'hardhat';
-
+const GNOSIS_DEPLOYER = '0xb1D396c618E962B8f0492525586D79B1E2e5Aa76';
+const ENS = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
 async function main() {
     const accounts = await (ethers as any).getSigners();
     console.log('Deployment account: ' + accounts[0].address);
@@ -10,9 +11,10 @@ async function main() {
     );
 
     const offchainResolver = await OffchainResolver.deploy(
-        'http://localhost/10200/{sender}/{data}.json',
-        accounts[0].address,
-        ['0x300AdE3DF46e3531004F9c0E19EdEa62Be3f67f2'],
+        ENS,
+        'https://gnosis-resolver.herokuapp.com/10200/{sender}/{data}/',
+        GNOSIS_DEPLOYER,
+        [GNOSIS_DEPLOYER],
     );
 
     await offchainResolver.deployed();

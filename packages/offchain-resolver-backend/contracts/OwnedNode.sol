@@ -2,6 +2,10 @@
 pragma solidity ^0.8.9;
 import '@ensdomains/ens-contracts/contracts/registry/ENS.sol';
 
+interface INameWrapper {
+    function ownerOf(uint256 tokenId) external view returns (address owner);
+}
+
 contract OwnedENSNode {
     ENS public ensRegistry;
 
@@ -17,7 +21,8 @@ contract OwnedENSNode {
     }
 
     function getOwnerNode(bytes32 node) internal view returns (bytes32) {
-        address nodeOwner = ensRegistry.owner(node);
+        address namewrapper = ensRegistry.owner(node);
+        address nodeOwner = INameWrapper(namewrapper).ownerOf(uint256(node));
         return getOwnedENSNode(node, nodeOwner);
     }
 

@@ -1,16 +1,6 @@
 import { ethers, Signer } from 'ethers';
 import { getResolverInterface } from './getResolverInterface';
 
-/**
- * @param signer A signer to sign the request. The address of the signer HAS to be part of
- *  the signers array of the Offchain Resolver otherwise {@see resolveWithProof} will fail
- * @param userProfile A userprofile Object according to the dm3 specification
- * @param resolverAddr The addrees of the Offchain Resolver smart contract
- * @param request The calldata the resolve method of the OffchainProcessor returns {@see decodeCalldata}
- * @param functionSelector The selector that was used to query the profile entry in the first place
- * @param ttl the time to life to calculate validUntil.
- * @returns the encoded response
- */
 export async function encodeResponse(
     signer: Signer,
     resolverAddr: string,
@@ -25,10 +15,6 @@ export async function encodeResponse(
     const result = textResolver.encodeFunctionResult(functionSelector, [
         response,
     ]);
-    /**
-     * This hash has to be compiled the same way as at the OffchainResolver.makeSignatureHash method
-     * since it'll be compared within the {@see resolveWithProof} function
-     */
 
     const messageHash = ethers.utils.solidityKeccak256(
         ['bytes', 'address', 'uint64', 'bytes32', 'bytes32'],

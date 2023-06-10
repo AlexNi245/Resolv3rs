@@ -4,8 +4,6 @@ pragma solidity ^0.8.9;
 import './IExtendedResolver.sol';
 import './SignatureVerifier.sol';
 
-import 'hardhat/console.sol';
-
 import './OwnedNode.sol';
 
 interface ISupportsInterface {
@@ -34,7 +32,6 @@ interface IResolverService {
  * Implements an ENS resolver that directs all queries to a CCIP read gateway.
  * Callers must implement EIP 3668 and ENSIP 10.
  */
-//TODO RENAME!!!
 contract OffchainResolver is
     IExtendedResolver,
     SupportsInterface,
@@ -127,7 +124,6 @@ contract OffchainResolver is
         bytes calldata name,
         bytes calldata data
     ) external view override returns (bytes memory) {
-        console.logBytes(name);
         bytes memory callData = abi.encodeWithSelector(
             IResolverService.resolve.selector,
             name,
@@ -136,7 +132,6 @@ contract OffchainResolver is
 
         string[] memory urls = new string[](1);
         urls[0] = url;
-        console.log(url);
         revert OffchainLookup(
             address(this),
             urls,

@@ -33,8 +33,9 @@ export function ccipGateway(signer: Signer) {
             try {
                 const { request, signature } = decodeCcipRequest(calldata);
 
+                console.log('REQ', request);
                 const chain: IChain = await getChain(Number.parseInt(chainId));
-
+                console.log('CHAIN', chain);
                 //Adjust
                 const response = await handleCcipRequest(
                     chain,

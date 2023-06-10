@@ -4,6 +4,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "dependencies": {
+        "@defi-wonderland/smock": "^2.3.4",
         "@ensdomains/buffer": "0.0.10",
         "@ensdomains/dnssec-oracle": "0.1.2",
         "@ensdomains/ens-contracts": "^0.0.19",
@@ -34,7 +35,7 @@
         "deploy:goerli": " hardhat run scripts/deploy.ts --network goerli",
         "deploy:mainnet": " hardhat run scripts/deploy.ts --network mainnet",
         "start": "yarn ts-node --transpile-only  ./src/index.ts",
-        "test": " npm run docker:up && nyc hardhat test test/**test.ts src/**/**.test.ts  ",
+        "test": " npm run docker:up && npx hardhat test test/**test.ts src/**/**.test.ts  ",
         "test:local": "nyc hardhat test test/**test.ts src/**/**.test.ts ",
         "build": "echo 'no build script'"
     },

@@ -24,6 +24,12 @@ const GOERLI_RPC = process.env.GOERLI_RPC ?? '';
 const GNOSIS_PK = process.env.GNOSIS_PK ?? '';
 const GNOSIS_RPC = process.env.GNOSIS_RPC ?? '';
 
+const MANTLE_PK = process.env.MANTLE_PK ?? '';
+const MANTLE_RPC = process.env.MANTLE_RPC ?? '';
+
+const OPTIMISM_PK = process.env.OPTIMISM_PK ?? '';
+const OPTIMISM_RPC = process.env.OPTIMISM_RPC ?? '';
+
 const networks = {
     localhost: {
         url: 'http://localhost:8545',
@@ -54,6 +60,19 @@ const getNetworks = () => {
         networks.mainnet = {
             url: MAINNET_RPC,
             accounts: [MAINNET_PK],
+        };
+    }
+    if (MANTLE_PK) {
+        networks.mantle = {
+            url: MANTLE_RPC,
+            accounts: [MANTLE_PK],
+        };
+    }
+
+    if (OPTIMISM_PK) {
+        networks.optimism = {
+            url: OPTIMISM_RPC,
+            accounts: [OPTIMISM_PK],
         };
     }
 

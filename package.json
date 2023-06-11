@@ -2,25 +2,8 @@
     "private": true,
     "workspaces": {
         "packages": [
-            "packages/lib/shared",
-            "packages/lib/crypto",
-            "packages/lib/profile",
-            "packages/lib/messaging",
-            "packages/lib/delivery",
-            "packages/lib/storage",
-            "packages/lib/delivery-api",
-            "packages/lib/offchainResolver",
-            "packages/lib/offchainResolver-api",
-            "packages/offchain-resolver-backend",
-            "packages/lib/billboard-api",
-            "packages/backend",
-            "packages/billboard-client",
-            "packages/react",
-            "packages/web",
-            "packages/offchain-resolver",
-            "packages/billboard-widget",
-            "packages/integration-tests",
-            "packages/ens-app-v3"
+            "packages/ens-app-v3",
+            "packages/gateway"
         ],
         "nohoist": [
             "**/react",
@@ -45,8 +28,7 @@
     "scripts": {
         "docker:up": "cd packages/backend && docker-compose up -d",
         "build": " yarn workspaces foreach -pt run build",
-        "start": "yarn workspace dm3-backend start",
-        "resolver": "yarn workspace dm3-offchain-resolver-backend start",
+        "start": "yarn workspace gateway start",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --fix",
         "format": "prettier --write '*/**/*.{js,ts,tsx,json}'",
         "format:check": "prettier --check '*/**/*.{js,ts,tsx,json}'",

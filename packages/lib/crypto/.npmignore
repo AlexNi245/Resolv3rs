@@ -1,6 +1,0 @@
-node_modules/
-src/
-coverage/
-jest.config.jest
-tsconfig.backend.json
-tsconfig.json

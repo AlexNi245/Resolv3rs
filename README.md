@@ -1,8 +1,12 @@
-#Resolv3er
+# Resolv3er
 
 # What it is
 
 We're extending the capabilities of ENS records beyond Ethereum Mainnet. For that we're leveraging ERC-3668 CCPI Read to store Ens records on blockchain resolvers. Enabling ENS users to store their data in their favorite ecosystems.
+
+DISCLAIMER
+
+We're forking the corpus/dm3 because our first idea was to build on top of their project. However we pivotet away from that idea but still using the forked repo from dm3 to host our code. 
 
 # How is it build
 
@@ -53,17 +57,23 @@ Due to time constraints, we were just able to add Gnosis Chain, Mantle and Optim
 ## Gnosis
 
 L1 OffchainResolver 0xB4A824f381e77b40346EBa86CC34eE7252e041F2
+
 L2 PublicResolver 0xB4A824f381e77b40346EBa86CC34eE7252e041F2
+
 Gateway 'https://gnosis-resolver.herokuapp.com/10200/{sender}/{data}/',
 
 ## Mantle
 
 L1 OffchainResolver 0x79B99730d677118800C7d87413A86f136C15eA56
+
 L2 Public Resolver 0x19412b03f08A6AD2904D2C9df3E28bC27fc9c92a
+
 Gateway 'https://mantle-resolver.herokuapp.com/5001/{sender}/{data}/',
 
 ## Optimism
 
 L1 OffchainResolver 0x5d8Ed5730736EF5a955AdDB7f81eDbb8e25C9AE2
+
 L2 Public Resolver 0x19412b03f08A6AD2904D2C9df3E28bC27fc9c92a
+
 Gateway 'https://mantle-resolver.herokuapp.com/5001/{sender}/{data}/',

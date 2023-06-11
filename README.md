@@ -62,7 +62,7 @@ L1 OffchainResolver 0x79B99730d677118800C7d87413A86f136C15eA56
 L2 Public Resolver 0x19412b03f08A6AD2904D2C9df3E28bC27fc9c92a
 Gateway 'https://mantle-resolver.herokuapp.com/5001/{sender}/{data}/',
 
-## Mantle
+## Optimism
 
 L1 OffchainResolver 0x5d8Ed5730736EF5a955AdDB7f81eDbb8e25C9AE2
 L2 Public Resolver 0x19412b03f08A6AD2904D2C9df3E28bC27fc9c92a
